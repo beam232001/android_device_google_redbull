@@ -464,6 +464,19 @@ TARGET_USES_DRM_PP := true
 TARGET_HAS_WIDE_COLOR_DISPLAY := true
 TARGET_HAS_HDR_DISPLAY := true
 
+# APEX
+DEXPREOPT_GENERATE_APEX_IMAGE := true
+
+# Build
+BUILD_BROKEN_DUP_RULES := true
+
+# Crypto
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+BOARD_USES_METADATA_PARTITION := true
+
 # Vendor Interface Manifest
 DEVICE_MANIFEST_FILE := device/google/redbull/manifest.xml
 ifeq (,$(filter %_64,$(TARGET_PRODUCT)))
@@ -518,3 +531,47 @@ BOARD_BUILD_VENDOR_RAMDISK_IMAGE := true
 
 # Testing related defines
 BOARD_PERFSETUP_SCRIPT := platform_testing/scripts/perf-setup/b5r3-setup.sh
+
+# Display
+TARGET_SCREEN_DENSITY := 420
+
+# Recovery
+BOARD_USES_RECOVERY_AS_BOOT := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+
+# TWRP Configuration
+TW_THEME := portrait_hdpi
+RECOVERY_SDCARD_ON_DATA := true
+TW_EXTRA_LANGUAGES := true
+TW_SCREEN_BLANK_ON_BOOT := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_USE_TOOLBOX := true
+TW_INCLUDE_REPACKTOOLS := true
+TW_DEFAULT_BRIGHTNESS := "80"
+TW_INCLUDE_CRYPTO := true
+TW_EXCLUDE_APEX := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+#TW_ADDITIONAL_APEX_FILES := "com.google.android.tzdata3.apex com.google.android.art.apex com.google.android.media.apex"
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_INCLUDE_NTFS_3G := true
+TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/bin/strace
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/lib64/android.hardware.authsecret@1.0.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/lib64/android.hardware.oemlock@1.0.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/vendor/lib/hw/bootctrl.msmnile.so
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+# MTP will not work until we update it to support ffs
+#TW_EXCLUDE_MTP := true
+TW_SUPPORT_INPUT_AIDL_HAPTICS := true
+LZMA_RAMDISK_TARGETS := recovery,boot
+TW_OVERRIDE_SYSTEM_PROPS := \
+    "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.name=ro.product.system.name"
+#TW_EXTRA_LANGUAGES := true
+#TW_LIBTAR_DEBUG := true
+TW_INCLUDE_RESETPROP := true
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/tz-by-name/cpu-0-0-step/temp
+# modprobe seems unreliable if twrp is fastbooted,
+# using insmod to load ramdisk kernel modules,
+# otherwise let twrp load vendor kernel modules
+TW_LOAD_VENDOR_MODULES := "ftm5.ko sec_touch.ko drv2624.ko"
